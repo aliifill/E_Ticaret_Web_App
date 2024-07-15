@@ -1,4 +1,4 @@
-using E_Ticaret.Data;
+using E_Ticaret.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

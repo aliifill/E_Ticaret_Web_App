@@ -1,4 +1,4 @@
-﻿using E_Ticaret.Data;
+﻿using E_Ticaret.DataAccess.Data;
 using E_Ticaret.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace E_Ticaret.Data
+namespace E_Ticaret.DataAccess.Data
 {
     public class ApplicationDbContext : DbContext
     {
