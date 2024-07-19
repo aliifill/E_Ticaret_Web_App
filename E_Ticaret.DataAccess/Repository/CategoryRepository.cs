@@ -1,5 +1,4 @@
 ﻿using E_Ticaret.DataAccess.Data;
-using E_Ticaret.DataAccess.Repository.IRepository;
 using E_Ticaret.Models;
 using System;
 using System.Collections.Generic;
@@ -12,14 +11,14 @@ namespace E_Ticaret.DataAccess.Repository
 {
     public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
-        private ApplicationDbContext _db;
+        private ApplicationDbContext _unitOfWork;
         public CategoryRepository(ApplicationDbContext db) : base(db)
         {
-            _db = db;   
+            _unitOfWork = db;   
         }
         public void Update(Category obj)
         {
-          _db.Categories.Update(obj);
+            _unitOfWork.Categories.Update(obj);
         }
     }
 }
