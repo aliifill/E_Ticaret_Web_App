@@ -1,21 +1,22 @@
 ﻿using E_Ticaret.DataAccess.Data;
+using E_Ticaret.DataAccess.Repository.IRepository;
 using E_Ticaret.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Reflection.Metadata.Ecma335;
 
-namespace E_Ticaret.Controllers
+namespace E_Ticaret.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
-        public ActionResult Index()
+        public IActionResult Index()
         {
-            return View();
+            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
+            return View(objCategoryList);
         }
         public ActionResult Create()
         {
@@ -31,8 +32,8 @@ namespace E_Ticaret.Controllers
 
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Save();
                 TempData["succes"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
@@ -45,8 +46,8 @@ namespace E_Ticaret.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _db.Categories.Find(id);
-
+            Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
+            //Category? categoryFromDb2 = _categoryRepo.Categories.Where(u=>u.Id==id).FirstOrDefault();
 
             if (categoryFromDb == null)
             {
@@ -60,8 +61,8 @@ namespace E_Ticaret.Controllers
 
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Save();
                 TempData["succes"] = "Category update successfully";
                 return RedirectToAction("Index");
             }
@@ -74,7 +75,7 @@ namespace E_Ticaret.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _db.Categories.Find(id);
+            Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
 
 
             if (categoryFromDb == null)
@@ -86,18 +87,18 @@ namespace E_Ticaret.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _db.Categories.Find(id);
+            Category? obj = _unitOfWork.Category.Get(u => u.Id == id);
             if (obj == null)
             {
                 return NotFound();
             }
-            _db.Categories.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.Category.Delete(obj);
+            _unitOfWork.Save();
             TempData["succes"] = "Category delete successfully";
             return RedirectToAction("Index");
         }
-        
-   
-        
+
+
+
     }
 }
