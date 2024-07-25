@@ -12,10 +12,12 @@ namespace E_Ticaret.DataAccess.Repository
     {
         private ApplicationDbContext _unitOfWork;
         public ICategoryRepository Category { get;private set; }
+        public IProductRepository Product { get; private set; }
         public UnitOfWork(ApplicationDbContext db) 
         {
             _unitOfWork = db;
             Category = new CategoryRepository(_unitOfWork);
+            Product = new ProductRepoistory(_unitOfWork);
         }
         public void Save()
         {
